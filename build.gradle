@@ -37,6 +37,10 @@ repositories {
 		name = 'ParchmentMC'
 		url = 'https://maven.parchmentmc.org'
 	}
+	maven {
+		name = "Modrinth"
+		url = "https://api.modrinth.com/maven"
+	}
 }
 
 dependencies {
@@ -52,18 +56,19 @@ dependencies {
 
 	//rusherhack api
 	rusherhackApi "org.rusherhack:rusherhack-api:$minecraft_version-SNAPSHOT"
+	modImplementation("maven.modrinth:xaeroplus:2.25.3+fabric-1.20.1")
 }
 
 tasks.register('updateAccessWidener', Copy) {
 	group = "build"
 	outputs.upToDateWhen { false }
-	
+
 	def accessWidenerFile = zipTree(this.project.configurations.rusherhackApi.singleFile).matching {
 		include "rusherhack.accesswidener"
 	}.files.iterator().next()
-	
+
 	println("rusherhack access widener: " + accessWidenerFile)
-	
+
 	from(accessWidenerFile)
 	into(file("build/tmp/" + this.project.minecraft_version))
 }
